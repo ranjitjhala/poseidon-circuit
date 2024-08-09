@@ -20,7 +20,7 @@ mod chip_long {
 #[cfg(feature = "short")]
 mod chip_short {
     use super::{SpongeChip, SpongeConfig};
-    use crate::poseidon::{SeptidonChip};
+    use crate::poseidon::SeptidonChip;
     /// The configuration of the Poseidon hash chip.
     pub type PoseidonHashConfig<F> = SpongeConfig<F, SeptidonChip>;
     /// The Poseidon hash chip.
@@ -819,7 +819,7 @@ where
             //
             // Each chunk would be processed in a separate thread.
             let assignments = data
-                .group_by(|((_, control), _), _| {
+                .chunk_by(|((_, control), _), _| {
                     chunk_len += 1;
                     if control.copied().unwrap_or(0) > STEP as u64 || chunk_len < min_len {
                         true
